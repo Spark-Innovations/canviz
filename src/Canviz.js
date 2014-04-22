@@ -84,7 +84,7 @@ Canviz.prototype = {
     if (~indexOf(this._textModes, textMode)) this.textMode = textMode;
     else debug('unsupported text mode ' + textMode);
   },
-  load: function (url, urlParams) {
+  load: function (url, urlParams, callback) {
     if (urlParams) return console.log('urlParams not supported');
 
     var self = this;
@@ -94,6 +94,7 @@ Canviz.prototype = {
         console.log(err.message);
       } else {
         self.parse(text);
+        if (callback) callback();
       }
     });
   },

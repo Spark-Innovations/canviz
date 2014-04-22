@@ -66,7 +66,21 @@ Entity.prototype = {
     if (!redrawCanvasOnly) {
       this.initBB();
       if (IS_BROWSER) {
+        
+        // returns the Class of the object as a string
+        var objectType = function(obj) {
+          if (obj && obj.constructor && obj.constructor.toString) {
+            var arr = obj.constructor.toString().match(/function\s*(\w+)/);
+            if (arr && arr.length == 2) {
+              return arr[1];
+            }
+          }
+          return undefined;
+        };
+        
         var bbDiv = document.createElement('div');
+        bbDiv.classList.add('canviz-'+objectType(this).toLowerCase()); // adds the class, like "node" for further styling
+        if (this.name) { bbDiv.setAttribute('data-canviz-name', this.name); } // adds the canvas node name for further styling
         var bbScale = this.canviz.bbScale;
         this.canviz.elements.appendChild(bbDiv);
       }

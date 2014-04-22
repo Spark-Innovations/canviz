@@ -98,7 +98,11 @@ Canviz.prototype = {
     });
   },
   parse: function (xdot) {
-    if (IS_BROWSER) document.getElementById('debug_output').innerHTML = '';
+    if (IS_BROWSER) {
+      if (document.getElementById('debug_output')) {
+        document.getElementById('debug_output').innerHTML = '';
+      }
+    }
 
     this.graphs = [];
     this.images = {};

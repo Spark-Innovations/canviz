@@ -6,7 +6,11 @@ function debug(str, escape) {
   if (escape) {
     str = escapeHtml(str);
   }
-  document.getElementById('debug_output').innerHTML += '&raquo;' + str + '&laquo;<br />';
+  if (document.getElementById('debug_output')) {
+    document.getElementById('debug_output').innerHTML += '&raquo;' + str + '&laquo;<br />';
+  } else {
+    console.log(str);
+  }
 }
 
 module.exports = debug;

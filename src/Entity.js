@@ -264,6 +264,9 @@ Entity.prototype = {
                     break;
                   case 'dom':
                     if (!redrawCanvasOnly) {
+                      // if the parent of this label is a node, and the parent can be found, this is not null, so we can try to attach it as a child
+                      var parentOfTextNode = (this.defaultAttrHashName == 'nodeAttrs') ? $('div.canviz-node[data-canviz-name="'+this.name+'"]').get(0) : null;
+                      
                       str = escapeHtml(str).replace(/ /g, '&nbsp;');
                       var text;
                       var href = this.getAttr('URL', true) || this.getAttr('href', true);
@@ -296,7 +299,7 @@ Entity.prototype = {
                       style.fontStyle = textStyle & TEXT_ITALIC ? 'italic' : 'normal';
                       style.fontWeight = textStyle & TEXT_BOLD ? 'bold' : 'normal';
                       style.lineHeight = 1;
-                      style.position = 'absolute';
+                      if (!parentOfTextNode) style.position = 'absolute';
                       style.textAlign = textAlign;
                       style.textDecoration = decorations.length ? decorations.join(' ') : 'none';
                       if (strokeColor.opacity < 1) setOpacity(text, strokeColor.opacity);
@@ -313,10 +316,15 @@ Entity.prototype = {
                           style.MozTransformOrigin = style.MsTransformOrigin = style.OTransformOrigin = style.transformOrigin = style.WebkitTransformOrigin = '0 0';
                         }
                       }
-                      style.left = (rotate ? top : left) + 'px';
-                      style.top = (rotate ? this.canviz.pixelWidth - left : top) + 'px';
-                      style.width = width + 'px';
-                      this.canviz.elements.appendChild(text);
+                      if (!parentOfTextNode) style.left = (rotate ? top : left) + 'px';
+                      if (!parentOfTextNode) style.top = (rotate ? this.canviz.pixelWidth - left : top) + 'px';
+                      if (!parentOfTextNode) style.width = width + 'px';
+                      if (!parentOfTextNode) {
+                        this.canviz.elements.appendChild(text);
+                      } else {
+                        style.display = 'block';
+                        parentOfTextNode.appendChild(text);
+                      }
                     }
                     break;
                 }

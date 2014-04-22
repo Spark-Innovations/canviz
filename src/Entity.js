@@ -264,7 +264,7 @@ Entity.prototype = {
                     break;
                   case 'dom':
                     if (!redrawCanvasOnly) {
-                      str = escapeHtml(str).replace(/ /g, '&nbsp;');
+                      str = escapeHtml(str).replace(/ /g, '&nbsp;').replace('&lt;s&gt;', '<small>').replace('&lt;/s&gt;', '</small>');
                       var text;
                       var href = this.getAttr('URL', true) || this.getAttr('href', true);
                       if (href) {
